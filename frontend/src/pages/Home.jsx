@@ -22,27 +22,38 @@ const Home = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true)
-        const [projectsResponse, skillsResponse] = await Promise.all([
-          projectsAPI.getFeatured(),
-          skillsAPI.getAll()
-        ])
-        
-        setFeaturedProjects(projectsResponse.data.data)
-        setSkills(skillsResponse.data.data)
-      } catch (err) {
-        setError('Failed to load data. Please try again later.')
-        console.error('Error fetching data:', err)
-      } finally {
-        setLoading(false)
-      }
-    }
+ useEffect(() => {
+  const fetchData = async () => {
+    try {
+      setLoading(true);
 
-    fetchData()
-  }, [])
+      const [projectsResponse, skillsResponse] = await Promise.all([
+        projectsAPI.getFeatured(),
+        skillsAPI.getAll()
+      ]);
+
+      setFeaturedProjects(projectsResponse.data.data);
+
+      // FIX SKILLS HERE
+      const grouped = skillsResponse.data.data.reduce((acc, skill) => {
+        if (!acc[skill.category]) acc[skill.category] = [];
+        acc[skill.category].push(skill);
+        return acc;
+      }, {});
+
+      setSkills(grouped);
+
+    } catch (err) {
+      setError('Failed to load data. Please try again later.');
+      console.error('Error fetching data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchData();
+}, []);
+
 
   if (loading) {
     return (
@@ -194,7 +205,8 @@ const Home = () => {
                 {category}
               </Typography>
               <Box>
-                {categorySkills.slice(0, 4).map((skill) => (
+                {(Array.isArray(categorySkills) ? categorySkills : []).slice(0, 4).map(skill => (
+
                   <Chip
                     key={skill._id}
                     label={skill.name}

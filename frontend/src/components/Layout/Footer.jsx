@@ -20,13 +20,13 @@ const Footer = () => {
           </Typography>
           
           <Box>
-            <IconButton color="inherit" href="https://github.com/yourusername" target="_blank">
+            <IconButton color="inherit" href="https://github.com/mark61-done/mark61-done.git" target="_blank">
               <GitHub />
             </IconButton>
-            <IconButton color="inherit" href="https://linkedin.com/in/yourusername" target="_blank">
+            <IconButton color="inherit" href="https://www.linkedin.com/in/marko-olando-898528389?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">
               <LinkedIn />
             </IconButton>
-            <IconButton color="inherit" href="mailto:your.email@example.com">
+            <IconButton color="inherit" href="./contact" >
               <Email />
             </IconButton>
           </Box>

@@ -96,7 +96,7 @@ const Contact = () => {
                       Email
                     </Typography>
                     <Typography variant="body1">
-                      your.email@example.com
+                      markoolando558@gmail.com
                     </Typography>
                   </Box>
                 </Box>
@@ -108,7 +108,7 @@ const Contact = () => {
                       Phone
                     </Typography>
                     <Typography variant="body1">
-                      +1 (555) 123-4567
+                      +254 759-386-624
                     </Typography>
                   </Box>
                 </Box>
@@ -120,7 +120,7 @@ const Contact = () => {
                       Location
                     </Typography>
                     <Typography variant="body1">
-                      Your City, Country
+                      Nairobi, Kenya
                     </Typography>
                   </Box>
                 </Box>
@@ -132,7 +132,7 @@ const Contact = () => {
               <Box sx={{ display: 'flex', gap: 2 }}>
                 <Button
                   variant="outlined"
-                  href="https://github.com/yourusername"
+                  href="https://github.com/mark61-done/mark61-done.git"
                   target="_blank"
                   startIcon={<GitHubIcon />}
                 >
@@ -140,7 +140,7 @@ const Contact = () => {
                 </Button>
                 <Button
                   variant="outlined"
-                  href="https://linkedin.com/in/yourusername"
+                  href="https://www.linkedin.com/in/marko-olando-898528389?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
                   target="_blank"
                   startIcon={<LinkedInIcon />}
                 >

@@ -26,7 +26,17 @@ const About = () => {
       try {
         setLoading(true);
         const response = await skillsAPI.getAll();
-        setSkills(response.data.list); // Using the flat list for progress bars
+       const list = response?.data?.list;
+
+if (Array.isArray(list)) {
+  setSkills(list);
+} else if (Array.isArray(response?.data)) {
+  setSkills(response.data);
+} else {
+  console.error(" Skills API returned unexpected format:", response.data);
+  setSkills([]); 
+}
+ // Using the flat list for progress bars
       } catch (err) {
         setError('Failed to load skills. Please try again later.');
         console.error('Error fetching skills:', err);
@@ -76,7 +86,7 @@ const About = () => {
               <Box textAlign="center" sx={{ py: 2 }}>
                 <PersonIcon sx={{ fontSize: 64, color: 'primary.main', mb: 2 }} />
                 <Typography variant="h5" gutterBottom>
-                  Your Name
+                  Marko Olando
                 </Typography>
                 <Typography variant="body1" color="text.secondary" gutterBottom>
                   Full Stack Developer
@@ -118,7 +128,7 @@ const About = () => {
                 Full Stack Developer
               </Typography>
               <Typography variant="body2" color="text.secondary" gutterBottom>
-                Company Name
+                Freelancer
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 2022 - Present
