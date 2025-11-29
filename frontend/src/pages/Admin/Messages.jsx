@@ -35,9 +35,10 @@ const AdminMessages = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const res = await axios.get('/api/admin/messages', {
-          headers: { Authorization: `Bearer ${user?.token}` }
-        });
+       const res = await axios.get('/api/admin/messages', {
+  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+});
+
         setMessages(res.data.data || []);
       } catch (err) {
         setError('Failed to load messages.');
@@ -47,18 +48,29 @@ const AdminMessages = () => {
     fetchMessages();
   }, [user]);
 
+  useEffect(() => {
+  console.log("USER OBJECT:", user);
+  console.log("TOKEN SENT:", user?.token);
+}, [user]);
+
+
   // Delete message function
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`/api/admin/messages/${id}`, {
-        headers: { Authorization: `Bearer ${user?.token}` }
-      });
-      setMessages(prev => prev.filter(msg => msg._id !== id)); // update state immediately
-    } catch (err) {
-      console.error(err);
-      setError('Failed to delete message.');
-    }
-  };
+ const handleDelete = async (id) => {
+  try {
+    const token = localStorage.getItem('token'); // fetch token
+    if (!token) throw new Error('No auth token found');
+
+    await axios.delete(`/api/admin/messages/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    setMessages(prev => prev.filter(msg => msg._id !== id));
+  } catch (err) {
+    console.error(err);
+    setError('Failed to delete message.');
+  }
+};
+
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>

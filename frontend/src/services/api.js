@@ -10,17 +10,13 @@ const api = axios.create({
 // Add token to requests automatically
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
-  console.log('🔐 API Request - Token found:', !!token);
-  
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-    console.log('🔐 Token added to request');
-  } else {
-    console.warn('⚠️ No token found in localStorage');
-  }
-  
+  console.log('🔐 Request URL:', config.url);
+  console.log('🔐 Request headers:', config.headers);
+
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
+
 
 // Handle auth errors
 api.interceptors.response.use(
