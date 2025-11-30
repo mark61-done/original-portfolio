@@ -78,4 +78,14 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+router.get('/count', async (req, res) => {
+  try {
+    const count = await Project.countDocuments();
+    res.json({ success: true, count });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Failed to fetch project count' });
+  }
+});
+
+
 module.exports = router;

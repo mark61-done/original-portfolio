@@ -7,25 +7,22 @@ const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
-// Add token to requests automatically
+// Add token automatically
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
-  console.log('🔐 Request URL:', config.url);
-  console.log('🔐 Request headers:', config.headers);
 
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
   return config;
 });
 
-
-// Handle auth errors
+// Handle 401 globally
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log('🔐 API Response Error:', error.response?.status);
-    
     if (error.response?.status === 401) {
-      console.log('🔐 401 Unauthorized - Logging out');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/admin/login';
@@ -34,7 +31,12 @@ api.interceptors.response.use(
   }
 );
 
-// Public APIs
+//
+// ────────────────────────────────────────────────
+// PUBLIC API
+// ────────────────────────────────────────────────
+//
+
 export const projectsAPI = {
   getAll: () => api.get('/projects'),
   getFeatured: () => api.get('/projects/featured'),
@@ -49,66 +51,67 @@ export const contactAPI = {
   sendMessage: (messageData) => api.post('/contact', messageData),
 };
 
-// Auth API
+//
+// ────────────────────────────────────────────────
+// AUTH API
+// ────────────────────────────────────────────────
+//
+
 export const authAPI = {
   login: (credentials) => api.post('/auth/login', credentials),
   register: (userData) => api.post('/auth/register', userData),
   getProfile: () => api.get('/auth/profile'),
 };
 
-// Admin APIs - FIXED VERSION
+//
+// ────────────────────────────────────────────────
+// ADMIN PROJECTS API
+// ────────────────────────────────────────────────
+//
+
 export const adminProjectsAPI = {
   getAll: () => api.get('/admin/projects'),
+  getCount: () => api.get('/admin/projects/count'), // ✅ added for dashboard
   getById: (id) => api.get(`/admin/projects/${id}`),
-  create: (projectData) => {
-    console.log('🔧 API - Creating project, data type:', typeof projectData);
-    console.log('🔧 API - Is FormData?', projectData instanceof FormData);
-    console.log('🔧 API - Data:', projectData);
-    
-    if (projectData instanceof FormData) {
-      console.log('🔧 API - Sending as FormData');
-      return api.post('/admin/projects', projectData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        timeout: 30000,
-      });
-    } else {
-      console.log('🔧 API - Sending as JSON');
-      return api.post('/admin/projects', projectData, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-    }
-  },
-  update: (id, projectData) => {
-    if (projectData instanceof FormData) {
-      return api.put(`/admin/projects/${id}`, projectData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        timeout: 30000,
-      });
-    } else {
-      return api.put(`/admin/projects/${id}`, projectData, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-    }
-  },
+
+  create: (projectData) =>
+    api.post('/admin/projects', projectData, {
+      headers: projectData instanceof FormData
+        ? { 'Content-Type': 'multipart/form-data' }
+        : { 'Content-Type': 'application/json' },
+      timeout: 30000,
+    }),
+
+  update: (id, projectData) =>
+    api.put(`/admin/projects/${id}`, projectData, {
+      headers: projectData instanceof FormData
+        ? { 'Content-Type': 'multipart/form-data' }
+        : { 'Content-Type': 'application/json' },
+      timeout: 30000,
+    }),
+
   delete: (id) => api.delete(`/admin/projects/${id}`),
 };
 
+//
+// ────────────────────────────────────────────────
+// ADMIN MESSAGES API
+// ────────────────────────────────────────────────
+//
+
 export const messagesAPI = {
   getAll: () => api.get('/admin/messages'),
-  getUnreadCount: () => api.get('/admin/messages/unread/count'),
+  getUnreadCount: () => api.get('/admin/messages/unread/count'), // ✅ now working for dashboard
   markAsRead: (id) => api.put(`/admin/messages/${id}/read`),
   delete: (id) => api.delete(`/admin/messages/${id}`),
 };
 
-// Admin Skills API
+//
+// ────────────────────────────────────────────────
+// ADMIN SKILLS API
+// ────────────────────────────────────────────────
+//
+
 export const adminSkillsAPI = {
   getAll: () => api.get('/admin/skills'),
   create: (skillData) => api.post('/admin/skills', skillData),

@@ -39,4 +39,14 @@ router.delete('/:id', auth, adminAuth, async (req, res) => {
   }
 });
 
+router.get('/unread/count', async (req, res) => {
+  try {
+    const count = await Message.countDocuments({ read: false });
+    res.json({ success: true, count });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Failed to fetch unread messages count' });
+  }
+});
+
+
 module.exports = router;

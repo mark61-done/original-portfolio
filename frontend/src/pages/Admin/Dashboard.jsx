@@ -18,17 +18,19 @@ import {
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { adminProjectsAPI, messagesAPI } from '../../services/api';
+import { adminProjectsAPI, messagesAPI, skillsAPI } from '../../services/api';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
   const [stats, setStats] = useState({
     projects: 0,
     unreadMessages: 0,
     skills: 0,
     visits: 0
   });
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,19 +39,21 @@ const AdminDashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const [projectsRes, messagesRes] = await Promise.all([
+      const [projectsRes, unreadMessagesRes, skillsRes] = await Promise.all([
         adminProjectsAPI.getAll(),
-        messagesAPI.getUnreadCount()
+        messagesAPI.getUnreadCount(),
+        skillsAPI.getAll()
       ]);
-      
+
       setStats({
-        projects: projectsRes.data.count || projectsRes.data.data?.length || 0,
-        unreadMessages: messagesRes.data.count || 0,
-        skills: 0, // You can add skills API later
-        visits: 0  // You can add analytics later
+        projects: projectsRes.data.length || 0, // your API returns array
+        unreadMessages: unreadMessagesRes.data.unreadCount || 0,
+        skills: skillsRes.data.length || 0,
+        visits: 0 // You can replace later with analytics API
       });
+
     } catch (error) {
-      console.error('Error fetching dashboard data:', error);
+      console.error('❌ Error fetching dashboard data:', error);
     } finally {
       setLoading(false);
     }
@@ -74,13 +78,14 @@ const AdminDashboard = () => {
       label: 'Skills', 
       value: stats.skills, 
       icon: <Code />, 
-      color: 'success' 
+      color: 'success',
+      action: () => navigate('/admin/skills')
     },
     { 
       label: 'Website Visits', 
       value: stats.visits, 
       icon: <Person />, 
-      color: 'info' 
+      color: 'info'
     },
   ];
 
@@ -146,32 +151,16 @@ const AdminDashboard = () => {
 
       {/* Quick Actions */}
       <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-        <Button
-          variant="contained"
-          onClick={() => navigate('/admin/projects')}
-          size="large"
-        >
+        <Button variant="contained" onClick={() => navigate('/admin/projects')} size="large">
           Manage Projects
         </Button>
-        <Button
-          variant="contained"
-          onClick={() => navigate('/admin/messages')}
-          size="large"
-        >
+        <Button variant="contained" onClick={() => navigate('/admin/messages')} size="large">
           View Messages
         </Button>
-        <Button
-          variant="contained"
-          onClick={() => navigate('/admin/skills')}
-          size="large"
-        >
+        <Button variant="contained" onClick={() => navigate('/admin/skills')} size="large">
           Manage Skills
         </Button>
-        <Button
-          variant="outlined"
-          onClick={() => navigate('/')}
-          size="large"
-        >
+        <Button variant="outlined" onClick={() => navigate('/')} size="large">
           View Portfolio
         </Button>
       </Box>
