@@ -54,7 +54,7 @@ const AdminDashboard = () => {
       });
 
     } catch (error) {
-      console.error('❌ Error fetching dashboard data:', error);
+      console.error(' Error fetching dashboard data:', error);
     } finally {
       setLoading(false);
     }
@@ -95,7 +95,7 @@ const AdminDashboard = () => {
             Admin Dashboard
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Welcome back, {user?.username} 👋
+            Welcome back, {user?.username} 
           </Typography>
         </Box>
 
