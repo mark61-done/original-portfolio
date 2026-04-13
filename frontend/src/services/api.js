@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:5000/api';
+const ADMIN_LOGIN_URL = `${import.meta.env.VITE_ADMIN_URL || 'http://localhost:3001'}/admin/login`;
 
 // Create axios instance
 const api = axios.create({
@@ -25,7 +26,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/admin/login';
+      window.location.href = ADMIN_LOGIN_URL;
     }
     return Promise.reject(error);
   }

@@ -17,7 +17,8 @@ const AdminRegister = () => {
   const [formData, setFormData] = useState({ 
     username: '', 
     password: '', 
-    confirmPassword: '' 
+    confirmPassword: '',
+    setupKey: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -112,6 +113,17 @@ const AdminRegister = () => {
             margin="normal"
             required
             disabled={loading}
+          />
+          <TextField
+            fullWidth
+            label="Setup Key (if registration is locked)"
+            name="setupKey"
+            type="password"
+            value={formData.setupKey}
+            onChange={handleChange}
+            margin="normal"
+            disabled={loading}
+            helperText="Optional for first admin account, required only when enabled on server"
           />
           <Button
             type="submit"

@@ -24,6 +24,7 @@ import { adminProjectsAPI, messagesAPI, skillsAPI } from '../../services/api';
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const portfolioUrl = import.meta.env.VITE_PORTFOLIO_URL || 'http://localhost:3000';
 
   const [stats, setStats] = useState({
     projects: 0,
@@ -182,7 +183,7 @@ const AdminDashboard = () => {
           <Button variant="contained" size="large" onClick={() => navigate('/admin/skills')} sx={{ borderRadius: '10px', px: 4 }}>
             Manage Skills
           </Button>
-          <Button variant="outlined" size="large" onClick={() => navigate('/')} sx={{ borderRadius: '10px', px: 4 }}>
+          <Button variant="outlined" size="large" onClick={() => { window.location.href = portfolioUrl; }} sx={{ borderRadius: '10px', px: 4 }}>
             View Portfolio
           </Button>
         </Box>
