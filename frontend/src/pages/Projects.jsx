@@ -13,7 +13,7 @@ import {
   ToggleButton,
   ToggleButtonGroup
 } from '@mui/material';
-import { projectsAPI } from '../services/api';
+import { assetUrl, projectsAPI } from '../services/api';
 import CodeIcon from '@mui/icons-material/Code';
 import LaunchIcon from '@mui/icons-material/Launch';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -120,6 +120,18 @@ const Projects = () => {
                 }
               }}
             >
+              {project.image && (
+                <Box
+                  component="img"
+                  src={assetUrl(project.image)}
+                  alt={project.title}
+                  sx={{
+                    width: '100%',
+                    height: 180,
+                    objectFit: 'cover',
+                  }}
+                />
+              )}
               <CardContent sx={{ flexGrow: 1, p: 3 }}>
                 {/* Category Badge */}
                 <Chip 

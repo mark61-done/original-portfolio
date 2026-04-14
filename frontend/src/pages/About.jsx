@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import {
   Container,
   Typography,
@@ -9,12 +9,19 @@ import {
   LinearProgress,
   CircularProgress,
   Alert,
-  Paper
+  Paper,
+  Chip,
+  Divider,
+  Stack,
+  Button
 } from '@mui/material';
 import { skillsAPI } from '../services/api';
 import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
 import WorkIcon from '@mui/icons-material/Work';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import DownloadIcon from '@mui/icons-material/Download';
+import CodeIcon from '@mui/icons-material/Code';
 
 const About = () => {
   const [skills, setSkills] = useState([]);
@@ -26,17 +33,7 @@ const About = () => {
       try {
         setLoading(true);
         const response = await skillsAPI.getAll();
-       const list = response?.data?.list;
-
-if (Array.isArray(list)) {
-  setSkills(list);
-} else if (Array.isArray(response?.data)) {
-  setSkills(response.data);
-} else {
-  console.error(" Skills API returned unexpected format:", response.data);
-  setSkills([]); 
-}
- // Using the flat list for progress bars
+        setSkills(Array.isArray(response?.data?.data) ? response.data.data : []);
       } catch (err) {
         setError('Failed to load skills. Please try again later.');
         console.error('Error fetching skills:', err);
@@ -52,6 +49,15 @@ if (Array.isArray(list)) {
     return skills.filter(skill => skill.category === category);
   };
 
+  const highlights = useMemo(() => {
+    const core = ['React', 'Node.js', 'Express', 'MongoDB'];
+    return [
+      { label: 'Core Stack', value: core.join(' • ') },
+      { label: 'Focus', value: 'Full‑stack web apps, dashboards, APIs' },
+      { label: 'Strengths', value: 'Clean UI, performance, maintainable code' },
+    ];
+  }, []);
+
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
@@ -61,16 +67,66 @@ if (Array.isArray(list)) {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      {/* Header */}
-      <Box textAlign="center" sx={{ mb: 6 }}>
-        <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
-          About Me
-        </Typography>
-        <Typography variant="h6" color="text.secondary">
-          Get to know more about my journey and skills
-        </Typography>
-      </Box>
+    <Container maxWidth="lg" sx={{ py: { xs: 4, md: 6 } }}>
+      {/* Hero */}
+      <Card
+        sx={{
+          mb: 5,
+          borderRadius: '18px',
+          overflow: 'hidden',
+          boxShadow: '0 18px 48px rgba(2, 6, 23, 0.08)',
+        }}
+      >
+        <CardContent sx={{ p: { xs: 3, md: 5 } }}>
+          <Grid container spacing={3} alignItems="center">
+            <Grid item xs={12} md={7}>
+              <Typography variant="overline" sx={{ letterSpacing: 1.5, color: 'primary.main' }}>
+                Full Stack Developer
+              </Typography>
+              <Typography variant="h3" sx={{ fontWeight: 800, mt: 1, mb: 1 }}>
+                Marko Olando Oloo
+              </Typography>
+              <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 700 }}>
+                I build modern, fast, and maintainable web applications — from polished UIs to secure APIs and databases.
+              </Typography>
+
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mt: 3 }}>
+                <Button variant="contained" endIcon={<ArrowForwardIcon />} href="/projects">
+                  View Projects
+                </Button>
+                <Button variant="outlined" startIcon={<DownloadIcon />} disabled>
+                  Download CV
+                </Button>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} md={5}>
+              <Card
+                variant="outlined"
+                sx={{
+                  borderRadius: '16px',
+                  bgcolor: 'background.default',
+                  borderColor: 'rgba(37, 99, 235, 0.18)',
+                }}
+              >
+                <CardContent>
+                  <Stack spacing={1.2}>
+                    {highlights.map((h) => (
+                      <Box key={h.label}>
+                        <Typography variant="caption" color="text.secondary">
+                          {h.label}
+                        </Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          {h.value}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
 
       {error && (
         <Alert severity="error" sx={{ mb: 4 }}>
@@ -81,25 +137,22 @@ if (Array.isArray(list)) {
       <Grid container spacing={4}>
         {/* Left Column - Personal Info */}
         <Grid item xs={12} md={4}>
-          <Card sx={{ mb: 3 }}>
+          <Card sx={{ mb: 3, borderRadius: '16px' }}>
             <CardContent>
               <Box textAlign="center" sx={{ py: 2 }}>
                 <PersonIcon sx={{ fontSize: 64, color: 'primary.main', mb: 2 }} />
-                <Typography variant="h5" gutterBottom>
-                  Marko Olando
-                </Typography>
-                <Typography variant="body1" color="text.secondary" gutterBottom>
-                  Full Stack Developer
+                <Typography variant="h5" gutterBottom sx={{ fontWeight: 700 }}>
+                  About
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Passionate about creating amazing digital experiences
+                  Passionate about building professional products with great UX, clean architecture, and reliable APIs.
                 </Typography>
               </Box>
             </CardContent>
           </Card>
 
           {/* Education */}
-          <Card sx={{ mb: 3 }}>
+          <Card sx={{ mb: 3, borderRadius: '16px' }}>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <SchoolIcon sx={{ mr: 1, color: 'primary.main' }} />
@@ -118,7 +171,7 @@ if (Array.isArray(list)) {
           </Card>
 
           {/* Experience */}
-          <Card>
+          <Card sx={{ borderRadius: '16px' }}>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <WorkIcon sx={{ mr: 1, color: 'primary.main' }} />
@@ -139,15 +192,25 @@ if (Array.isArray(list)) {
 
         {/* Right Column - Skills */}
         <Grid item xs={12} md={8}>
-          <Card>
+          <Card sx={{ borderRadius: '16px' }}>
             <CardContent>
-              <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
-                Technical Skills
-              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, mb: 2 }}>
+                <Box>
+                  <Typography variant="h5" sx={{ fontWeight: 800 }}>
+                    Technical Skills
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    A snapshot of the tools I use to ship production-ready applications.
+                  </Typography>
+                </Box>
+                <Chip icon={<CodeIcon />} label={`${skills.length} skills`} variant="outlined" />
+              </Box>
+
+              <Divider sx={{ mb: 3 }} />
 
               {/* Frontend Skills */}
               <Box sx={{ mb: 4 }}>
-                <Typography variant="h6" gutterBottom sx={{ color: 'primary.main' }}>
+                <Typography variant="h6" gutterBottom sx={{ color: 'primary.main', fontWeight: 700 }}>
                   Frontend Development
                 </Typography>
                 {getSkillsByCategory('frontend').map((skill) => (
@@ -169,7 +232,7 @@ if (Array.isArray(list)) {
 
               {/* Backend Skills */}
               <Box sx={{ mb: 4 }}>
-                <Typography variant="h6" gutterBottom sx={{ color: 'primary.main' }}>
+                <Typography variant="h6" gutterBottom sx={{ color: 'primary.main', fontWeight: 700 }}>
                   Backend Development
                 </Typography>
                 {getSkillsByCategory('backend').map((skill) => (
@@ -191,7 +254,7 @@ if (Array.isArray(list)) {
 
               {/* Database Skills */}
               <Box sx={{ mb: 4 }}>
-                <Typography variant="h6" gutterBottom sx={{ color: 'primary.main' }}>
+                <Typography variant="h6" gutterBottom sx={{ color: 'primary.main', fontWeight: 700 }}>
                   Database & Tools
                 </Typography>
                 {getSkillsByCategory('database').concat(getSkillsByCategory('tools')).map((skill) => (
@@ -213,7 +276,7 @@ if (Array.isArray(list)) {
 
               {/* Soft Skills */}
               <Box>
-                <Typography variant="h6" gutterBottom sx={{ color: 'primary.main' }}>
+                <Typography variant="h6" gutterBottom sx={{ color: 'primary.main', fontWeight: 700 }}>
                   Soft Skills
                 </Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>

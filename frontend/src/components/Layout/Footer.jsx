@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Container, Typography, IconButton } from '@mui/material';
 import { GitHub, LinkedIn, Email } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -9,14 +10,14 @@ const Footer = () => {
       sx={{
         backgroundColor: 'primary.main',
         color: 'white',
-        py: 3,
+        py: 4,
         mt: 'auto'
       }}
     >
       <Container maxWidth="lg">
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
           <Typography variant="body1">
-            © {new Date().getFullYear()} marko olando oloo. All rights reserved.
+            © {new Date().getFullYear()} Marko Olando Oloo. All rights reserved.
           </Typography>
           
           <Box>
@@ -26,7 +27,7 @@ const Footer = () => {
             <IconButton color="inherit" href="https://www.linkedin.com/in/marko-olando-898528389?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">
               <LinkedIn />
             </IconButton>
-            <IconButton color="inherit" href="./contact" >
+            <IconButton color="inherit" component={Link} to="/contact">
               <Email />
             </IconButton>
           </Box>

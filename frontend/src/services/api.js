@@ -1,7 +1,14 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_ORIGIN = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API_BASE_URL = `${API_ORIGIN.replace(/\/$/, '')}/api`;
 const ADMIN_LOGIN_URL = `${import.meta.env.VITE_ADMIN_URL || 'http://localhost:3001'}/admin/login`;
+export const assetUrl = (maybeRelativeUrl) => {
+  if (!maybeRelativeUrl) return '';
+  if (maybeRelativeUrl.startsWith('http://') || maybeRelativeUrl.startsWith('https://')) return maybeRelativeUrl;
+  if (maybeRelativeUrl.startsWith('/')) return `${API_ORIGIN.replace(/\/$/, '')}${maybeRelativeUrl}`;
+  return maybeRelativeUrl;
+};
 
 // Create axios instance
 const api = axios.create({

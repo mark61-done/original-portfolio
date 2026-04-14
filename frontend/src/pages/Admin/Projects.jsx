@@ -24,7 +24,7 @@ import {
   MenuItem
 } from '@mui/material';
 import { Add, Edit, Delete, Launch, Code } from '@mui/icons-material';
-import { adminProjectsAPI } from '../../services/api';
+import { adminProjectsAPI, assetUrl } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import ImageUpload from '../../components/Admin/ImageUpload'; // Add this import
 
@@ -194,7 +194,7 @@ const AdminProjects = () => {
                   <Box sx={{ mb: 2 }}>
                     <Box
                       component="img"
-                      src={project.image}
+                      src={assetUrl(project.image)}
                       alt={project.title}
                       sx={{
                         width: '100%',

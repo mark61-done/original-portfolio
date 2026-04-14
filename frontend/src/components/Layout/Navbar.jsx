@@ -34,9 +34,17 @@ const Navbar = () => {
 
   return (
     <HideOnScroll>
-      <AppBar position="sticky" color="primary" elevation={2}>
+      <AppBar
+        position="sticky"
+        elevation={0}
+        sx={{
+          backdropFilter: 'blur(12px)',
+          backgroundColor: 'rgba(15, 23, 42, 0.92)',
+          borderBottom: '1px solid rgba(148, 163, 184, 0.2)',
+        }}
+      >
         <Container maxWidth="lg">
-          <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Toolbar sx={{ justifyContent: 'space-between', minHeight: 72 }}>
             {/* Logo */}
             <Typography 
               variant="h6" 
@@ -47,11 +55,12 @@ const Navbar = () => {
                 color: 'inherit',
                 display: 'flex',
                 alignItems: 'center',
-                fontWeight: 'bold'
+                fontWeight: 800,
+                letterSpacing: '-0.02em',
               }}
             >
               <CodeIcon sx={{ mr: 1 }} />
-              Marko
+              Marko Portfolio
             </Typography>
 
             {/* Navigation Items */}
@@ -63,9 +72,14 @@ const Navbar = () => {
                   component={Link}
                   to={item.path}
                   sx={{ 
-                    mx: 1,
-                    fontWeight: location.pathname === item.path ? 'bold' : 'normal',
-                    borderBottom: location.pathname === item.path ? '2px solid white' : 'none'
+                    mx: 0.5,
+                    px: 1.8,
+                    fontWeight: location.pathname === item.path ? 700 : 500,
+                    borderRadius: 2,
+                    bgcolor: location.pathname === item.path ? 'rgba(255,255,255,0.14)' : 'transparent',
+                    '&:hover': {
+                      bgcolor: 'rgba(255,255,255,0.16)',
+                    },
                   }}
                 >
                   {item.label}

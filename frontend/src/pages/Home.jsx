@@ -12,7 +12,7 @@ import {
   Alert
 } from '@mui/material'
 import { Link } from 'react-router-dom'
-import { projectsAPI, skillsAPI } from '../services/api'
+import { assetUrl, projectsAPI, skillsAPI } from '../services/api'
 import CodeIcon from '@mui/icons-material/Code'
 import LaunchIcon from '@mui/icons-material/Launch'
 
@@ -66,7 +66,17 @@ const Home = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       {/* Hero Section */}
-      <Box textAlign="center" sx={{ mb: 8, py: 8 }}>
+      <Box
+        textAlign="center"
+        sx={{
+          mb: 8,
+          py: { xs: 7, md: 9 },
+          px: { xs: 2, md: 4 },
+          borderRadius: '24px',
+          border: '1px solid rgba(148, 163, 184, 0.2)',
+          background: 'linear-gradient(135deg, rgba(37,99,235,0.1) 0%, rgba(15,23,42,0.04) 100%)',
+        }}
+      >
         <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
           Hi, I'm <span style={{ color: '#2563eb' }}>Marko Olando Oloo</span>
         </Typography>
@@ -126,7 +136,7 @@ const Home = () => {
                 {project.image && (
                   <Box
                     component="img"
-                    src={project.image}
+                    src={assetUrl(project.image)}
                     alt={project.title}
                     sx={{
                       width: '100%',
