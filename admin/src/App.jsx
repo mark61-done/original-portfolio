@@ -2,16 +2,15 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import { AuthProvider } from '../../frontend/src/context/AuthContext'
-import AdminLayout from '../../frontend/src/components/Admin/AdminLayout'
-import ProtectedRoute from '../../frontend/src/components/Admin/ProtectedRoute'
-import AdminLogin from '../../frontend/src/pages/Admin/Login'
-import AdminRegister from '../../frontend/src/pages/Admin/Register'
-import AdminDashboard from '../../frontend/src/pages/Admin/Dashboard'
-import AdminProjects from '../../frontend/src/pages/Admin/Projects'
-import ProjectForm from '../../frontend/src/pages/Admin/projectForm'
-import AdminMessages from '../../frontend/src/pages/Admin/Messages'
-import AdminSkills from '../../frontend/src/pages/Admin/Skills'
+import { AuthProvider } from './context/AuthContext'
+import AdminLayout from './components/Admin/AdminLayout'
+import ProtectedRoute from './components/Admin/ProtectedRoute'
+import AdminLogin from './pages/Admin/Login'
+import AdminRegister from './pages/Admin/Register'
+import AdminDashboard from './pages/Admin/Dashboard'
+import AdminProjects from './pages/Admin/Projects'
+import AdminMessages from './pages/Admin/Messages'
+import AdminSkills from './pages/Admin/Skills'
 
 const theme = createTheme({
   palette: {
@@ -56,7 +55,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AdminLayout>
-                    <ProjectForm />
+                    <Navigate to="/admin/projects" replace />
                   </AdminLayout>
                 </ProtectedRoute>
               }
@@ -66,7 +65,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AdminLayout>
-                    <ProjectForm />
+                    <Navigate to="/admin/projects" replace />
                   </AdminLayout>
                 </ProtectedRoute>
               }
