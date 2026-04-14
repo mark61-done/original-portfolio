@@ -1,20 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Project = require('../../models/project');
-const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-
-// Multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const dir = path.join(__dirname, '../../uploads/projects');
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    cb(null, dir);
-  },
-  filename: (req, file, cb) => cb(null, Date.now() + '-' + Math.round(Math.random() * 1e9) + path.extname(file.originalname))
-});
-const upload = multer({ storage });
+const { uploadProjectImage, projectsDir } = require('../../middleware/uploadDisk');
 
 // GET all projects
 router.get('/', async (req, res) => {
@@ -27,7 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST create project
-router.post('/', upload.single('image'), async (req, res) => {
+router.post('/', uploadProjectImage.single('image'), async (req, res) => {
   try {
     const { title, description, technologies, githubUrl, liveUrl, featured, category } = req.body;
     if (!title || !description) return res.status(400).json({ success: false, message: 'Title & description required' });
@@ -51,13 +40,22 @@ router.post('/', upload.single('image'), async (req, res) => {
 });
 
 // PUT update project
-router.put('/:id', upload.single('image'), async (req, res) => {
+router.put('/:id', uploadProjectImage.single('image'), async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
     if (!project) return res.status(404).json({ success: false, message: 'Project not found' });
 
     const updatedData = { ...req.body };
-    if (req.file) updatedData.image = `/uploads/projects/${req.file.filename}`;
+    if (req.file) {
+      // delete old file if it was a local upload
+      if (project.image && typeof project.image === 'string' && project.image.startsWith('/uploads/projects/')) {
+        const oldFileName = path.basename(project.image);
+        const oldFilePath = path.join(projectsDir, oldFileName);
+        if (fs.existsSync(oldFilePath)) fs.unlinkSync(oldFilePath);
+      }
+
+      updatedData.image = `/uploads/projects/${req.file.filename}`;
+    }
     if (updatedData.technologies && !Array.isArray(updatedData.technologies)) updatedData.technologies = updatedData.technologies.split(',').map(t => t.trim());
 
     const updatedProject = await Project.findByIdAndUpdate(req.params.id, updatedData, { new: true, runValidators: true });
@@ -72,6 +70,13 @@ router.delete('/:id', async (req, res) => {
   try {
     const project = await Project.findByIdAndDelete(req.params.id);
     if (!project) return res.status(404).json({ success: false, message: 'Project not found' });
+
+    if (project.image && typeof project.image === 'string' && project.image.startsWith('/uploads/projects/')) {
+      const fileName = path.basename(project.image);
+      const filePath = path.join(projectsDir, fileName);
+      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    }
+
     res.json({ success: true, message: 'Project deleted' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Deletion failed', error: error.message });

@@ -15,10 +15,21 @@ router.get('/', async (req, res) => {
 // POST add new skill
 router.post('/', async (req, res) => {
   try {
-    const { name, level, category } = req.body;
+    const { name, level, category, proficiency } = req.body;
     if (!name) return res.status(400).json({ success: false, message: 'Skill name required' });
 
-    const skill = new Skill({ name, level: level || '', category: category || 'general' });
+    const validCategories = ['frontend', 'backend', 'tools', 'database', 'soft'];
+    const safeCategory = validCategories.includes(category) ? category : 'frontend';
+    const parsedProficiency = Number(proficiency ?? level);
+    const safeProficiency = Number.isFinite(parsedProficiency)
+      ? Math.max(1, Math.min(100, parsedProficiency))
+      : 50;
+
+    const skill = new Skill({
+      name: name.trim(),
+      category: safeCategory,
+      proficiency: safeProficiency,
+    });
     await skill.save();
     res.status(201).json({ success: true, message: 'Skill added successfully', data: skill });
   } catch (error) {

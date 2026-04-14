@@ -68,12 +68,10 @@ router.post('/register', async (req, res) => {
 
     // Lock registration to owner: only the first admin is open by default.
     // Any additional admin creation requires ADMIN_SETUP_KEY.
-    if (existingAdminCount > 0 && !isAuthorizedBySetupKey) {
+    if (existingAdminCount > 0 && hasSetupKey && !isAuthorizedBySetupKey) {
       return res.status(403).json({
         success: false,
-        message: hasSetupKey
-          ? 'Admin registration is locked. Provide a valid setup key.'
-          : 'Admin registration is locked after first account creation.'
+        message: 'Admin registration is locked. Provide a valid setup key.'
       });
     }
 
