@@ -77,12 +77,18 @@ const Home = () => {
           background: 'linear-gradient(135deg, rgba(37,99,235,0.1) 0%, rgba(15,23,42,0.04) 100%)',
         }}
       >
-        <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
-          Hi, I'm <span style={{ color: '#2563eb' }}>Marko Olando Oloo</span>
-        </Typography>
-        <Typography variant="h5" color="text.secondary" sx={{ mb: 4, maxWidth: '600px', mx: 'auto' }}>
-          Full Stack Developer passionate about creating amazing web experiences with modern technologies.
-        </Typography>
+       <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
+  Hi, I'm <span style={{ color: '#2563eb' }}>Marko Olando Oloo</span>
+</Typography>
+
+<Typography variant="h5" color="text.secondary" sx={{ mb: 4, maxWidth: '700px', mx: 'auto' }}>
+  Full Stack JavaScript Developer based in Nairobi, Kenya. I build scalable web applications using Node.js, MySQL, and modern frontend technologies.
+  I have developed a real-time admin dashboard with JWT authentication, secure password hashing, and live messaging using Socket.IO.
+</Typography>
+<Typography variant="body1" sx={{ maxWidth: '800px', mx: 'auto', mt: 4 }}>
+  My projects focus on real-world systems including authentication, CRUD operations, and real-time communication.
+  I enjoy building secure and scalable applications that solve practical problems.
+</Typography>
         <Box sx={{ mt: 4 }}>
           <Button 
             variant="contained" 
