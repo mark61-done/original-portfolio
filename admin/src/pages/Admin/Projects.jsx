@@ -183,8 +183,12 @@ const AdminProjects = () => {
                   </Box>
                 )}
 
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                  <Typography variant="h6" component="h3">
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2, gap: 1 }}>
+                  <Typography
+                    variant="h6"
+                    component="h3"
+                    sx={{ minWidth: 0, overflowWrap: 'anywhere', wordBreak: 'break-word' }}
+                  >
                     {project.title}
                   </Typography>
                   <Box>
@@ -197,13 +201,28 @@ const AdminProjects = () => {
                   </Box>
                 </Box>
 
-                <Typography variant="body2" color="text.secondary" paragraph sx={{ mb: 2 }}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  paragraph
+                  sx={{ mb: 2, overflowWrap: 'anywhere', wordBreak: 'break-word' }}
+                >
                   {project.description}
                 </Typography>
 
                 <Box sx={{ mb: 2 }}>
                   {(project.technologies || []).map((tech, index) => (
-                    <Chip key={index} label={tech} size="small" sx={{ mr: 0.5, mb: 0.5 }} />
+                    <Chip
+                      key={index}
+                      label={tech}
+                      size="small"
+                      sx={{
+                        mr: 0.5,
+                        mb: 0.5,
+                        maxWidth: '100%',
+                        '& .MuiChip-label': { whiteSpace: 'normal', overflowWrap: 'anywhere' },
+                      }}
+                    />
                   ))}
                 </Box>
 

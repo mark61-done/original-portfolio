@@ -153,10 +153,20 @@ const Home = () => {
                 )}
                 
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant="h5" component="h3" gutterBottom>
+                  <Typography
+                    variant="h5"
+                    component="h3"
+                    gutterBottom
+                    sx={{ overflowWrap: 'anywhere', wordBreak: 'break-word' }}
+                  >
                     {project.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" paragraph>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    paragraph
+                    sx={{ overflowWrap: 'anywhere', wordBreak: 'break-word' }}
+                  >
                     {project.description}
                   </Typography>
                   
@@ -166,7 +176,12 @@ const Home = () => {
                         key={index}
                         label={tech} 
                         size="small" 
-                        sx={{ mr: 0.5, mb: 0.5 }}
+                        sx={{
+                          mr: 0.5,
+                          mb: 0.5,
+                          maxWidth: '100%',
+                          '& .MuiChip-label': { whiteSpace: 'normal', overflowWrap: 'anywhere' }
+                        }}
                         color="primary"
                         variant="outlined"
                       />

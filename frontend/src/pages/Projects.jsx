@@ -151,11 +151,21 @@ const Projects = () => {
                   />
                 )}
 
-                <Typography variant="h5" component="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
+                <Typography
+                  variant="h5"
+                  component="h3"
+                  gutterBottom
+                  sx={{ fontWeight: 'bold', overflowWrap: 'anywhere', wordBreak: 'break-word' }}
+                >
                   {project.title}
                 </Typography>
                 
-                <Typography variant="body2" color="text.secondary" paragraph sx={{ mb: 2 }}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  paragraph
+                  sx={{ mb: 2, overflowWrap: 'anywhere', wordBreak: 'break-word' }}
+                >
                   {project.description}
                 </Typography>
                 
@@ -167,7 +177,12 @@ const Projects = () => {
                       label={tech} 
                       size="small" 
                       variant="outlined"
-                      sx={{ mr: 0.5, mb: 0.5 }}
+                      sx={{
+                        mr: 0.5,
+                        mb: 0.5,
+                        maxWidth: '100%',
+                        '& .MuiChip-label': { whiteSpace: 'normal', overflowWrap: 'anywhere' }
+                      }}
                     />
                   ))}
                   {project.technologies.length > 4 && (
